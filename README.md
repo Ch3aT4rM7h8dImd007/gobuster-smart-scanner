@@ -72,29 +72,37 @@ This tool is ideal for **penetration testers**, **bug bounty hunters**, and **sy
 
 For **Ubuntu / Debian / Kali Linux**:
 
+```bash
 sudo apt update
-sudo apt install -y gobuster proxychains4 \
-  curl git python3 python3-pip
+sudo apt install -y gobuster proxychains4 curl git python3 python3-pip
+```
 
 ### Step 2: Install Python Dependencies
 
-pip3 install requests --break-system-packages
-# or just: pip3 install requests
+```bash
+pip3 install requests --break-system-packages   # or just pip3 install requests
+```
 
 ### Step 3: Clone the Repository
 
+```bash
 git clone https://github.com/your-username/gobuster-smart-scanner.git
 cd gobuster-smart-scanner
+```
 
 ### Step 4: Make the Script Executable (Optional)
 
+```bash
 chmod +x gobuster_smart_scanner.py
+```
 
 ### Step 5: Verify Installation
 
+```bash
 python3 gobuster_smart_scanner.py --help
 # or simply run it with a target
 python3 gobuster_smart_scanner.py example.com
+```
 
 ---
 
@@ -102,21 +110,29 @@ python3 gobuster_smart_scanner.py example.com
 
 ### Basic Usage (Automatic Proxy Discovery)
 
+```bash
 python3 gobuster_smart_scanner.py <target-domain>
+```
 
 Example:
 
+```bash
 python3 gobuster_smart_scanner.py example.com
+```
 
 If you don't provide a target as an argument, the script will prompt you:
 
+```bash
 python3 gobuster_smart_scanner.py
 Enter target domain: example.com
 Proxy file path (press Enter for default): 
+```
 
 ### Using a Custom Proxy File
 
+```bash
 python3 gobuster_smart_scanner.py example.com my_proxies.txt
+```
 
 ### Command‑Line Options
 
@@ -129,22 +145,27 @@ python3 gobuster_smart_scanner.py example.com my_proxies.txt
 
 Each line must contain a full proxy URL in one of these formats:
 
+```text
 http://user:pass@host:port
 https://host:port
 socks4://host:port
 socks5://host:port
+```
 
 Example `my_proxies.txt`:
 
+```text
 http://192.168.1.1:8080
 socks5://10.0.0.1:1080
 https://proxy.example.com:443
 http://user:pass@47.89.184.18:3128
+```
 
 ---
 
 ## 🖥️ Example Output
 
+```text
 ╔═══════════════════════════════════════════════════════════════════╗
 ║     GOBUSTER SMART SCANNER - ALL OPTIONS                         ║
 ║     Fixed: -b "" to disable 404 blacklist                        ║
@@ -166,12 +187,15 @@ http://user:pass@47.89.184.18:3128
 💡 Fixed: -b "" (disabled 404 blacklist)
 ======================================================================
 
-📝 Test 1/18: HTTPS - Standard Scan   Common files and directories
-▶️ HTTPS - Standard Scan   🔓 Direct mode (no proxy)
-   CMD: gobuster dir -u https://example.com -w /usr/share/seclists/...
+📝 Test 1/18: HTTPS - Standard Scan
+   Common files and directories
+▶️ HTTPS - Standard Scan
+   🔓 Direct mode (no proxy)
+   CMD: gobuster dir -u https://example.com -w /usr/share/seclists/... -t 15 ...
    ✅ Completed in 12.34s - Found 42 entries
 
-📝 Test 2/18: HTTPS - With Redirect (-r)   Follow redirects...
+📝 Test 2/18: HTTPS - With Redirect (-r)
+   Follow redirects...
 
 ======================================================================
 📊 SCAN SUMMARY
@@ -181,7 +205,6 @@ Total Tests: 18
 ❌ Failed: 2
 📊 Total Entries Found: 342
 🔄 Proxy Used: 0 tests
-
 📋 Status Codes:
    • 200: 120 times (ACCESSIBLE)
    • 301: 45 times (REDIRECT)
@@ -202,82 +225,97 @@ Total Tests: 18
 [2] HTTPS - With Redirect (-r)
    ✅ PASS | Mode: 🔓 Direct | Time: 14.22s | Found: 38 entries
 ...
+
 ✅ Report saved: gobuster_scan_20260101_120000/report.txt
 ✅ Scan completed!
 📁 Results saved in: gobuster_scan_20260101_120000
+```
 
 ---
 
 ## ⚙️ How It Works (Flow Diagram)
 
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        START SCAN                                  │
-│               User provides target domain                          │
-│               and optional proxy file                              │
+│                        START SCAN                                   │
+│               User provides target domain                           │
+│               and optional proxy file                               │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│              PHASE 1: ENVIRONMENT SETUP                            │
+│              PHASE 1: ENVIRONMENT SETUP                             │
 │                                                                     │
-│  1. Check if Gobuster is installed; if not, try `sudo apt         │
-│     install gobuster -y`                                           │
-│                                                                     │
-│  2. Find or download wordlist:                                      │
-│     - Check common paths (/usr/share/seclists/...)                  │
-│     - If not found, `git clone` SecLists                            │
-│     - If that fails, create a fallback list                         │
-│                                                                     │
-│  3. Load proxies (from file or built‑in list)                       │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  1. Check if Gobuster is installed; if not, try `sudo apt  │    │
+│  │     install gobuster -y`                                    │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  2. Find or download wordlist:                              │    │
+│  │     - Check common paths (/usr/share/seclists/...)          │    │
+│  │     - If not found, `git clone` SecLists                    │    │
+│  │     - If that fails, create a fallback list                 │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  3. Load proxies (from file or built‑in list)               │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│              PHASE 2: CONNECTIVITY CHECK                           │
+│              PHASE 2: CONNECTIVITY CHECK                            │
 │                                                                     │
-│  Direct connection test (curl to target)                            │
-│  - If success (200/301/302/403) → direct mode enabled               │
-│  - If failure (429/timeout) → direct blocked → use proxies          │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  Direct connection test (curl to target)                     │    │
+│  │  - If success (200/301/302/403) → direct mode enabled       │    │
+│  │  - If failure (429/timeout) → direct blocked → use proxies  │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 │                                                                     │
-│  If direct blocked: test all proxies in parallel:                   │
-│  - For each proxy, check if it can reach Google                     │
-│  - Then check if it can reach the target                            │
-│  - Collect only working proxies into a pool                         │
-│  - Remove dead/blocked proxies                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  If direct blocked: test all proxies in parallel:           │    │
+│  │  - For each proxy, check if it can reach Google             │    │
+│  │  - Then check if it can reach the target                    │    │
+│  │  - Collect only working proxies into a pool                 │    │
+│  │  - Remove dead/blocked proxies                               │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│              PHASE 3: RUN 18 GOBUSTER TESTS                        │
+│              PHASE 3: RUN 18 GOBUSTER TESTS                         │
 │                                                                     │
 │  For each test (1..18):                                             │
-│  a) Choose mode: direct (if available) or proxy                     │
-│  b) If proxy: get next proxy from the pool (round‑robin)            │
-│  c) Build the Gobuster command with specific flags:                 │
-│     - HTTPS/HTTP base                                               │
-│     - Wordlist path                                                 │
-│     - Thread count (2, 15, or 30)                                  │
-│     - Status‑code filters (`-s` and `-b ""`)                      │
-│     - Extensions (`-x php,html,txt,...`)                           │
-│     - Redirect (`-r`), verbose (`-v`)                              │
-│     - Output file                                                   │
-│  d) Execute: if proxy, wrap with `proxychains4`                     │
-│  e) Capture and parse output (real‑time)                            │
-│  f) Detect rate‑limiting (429) and mark proxy failed                │
-│  g) Store results (entries, status codes, timing)                   │
-│  h) Random delay (0.5‑2s) before next test                          │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  a) Choose mode: direct (if available) or proxy             │    │
+│  │  b) If proxy: get next proxy from the pool (round‑robin)    │    │
+│  │  c) Build the Gobuster command with specific flags:         │    │
+│  │     - HTTPS/HTTP base                                       │    │
+│  │     - Wordlist path                                         │    │
+│  │     - Thread count (2, 15, or 30)                          │    │
+│  │     - Status‑code filters (`-s` and `-b ""`)              │    │
+│  │     - Extensions (`-x php,html,txt,...`)                   │    │
+│  │     - Redirect (`-r`), verbose (`-v`)                      │    │
+│  │     - Output file                                           │    │
+│  │  d) Execute: if proxy, wrap with `proxychains4`            │    │
+│  │  e) Capture and parse output (real‑time)                   │    │
+│  │  f) Detect rate‑limiting (429) and mark proxy failed       │    │
+│  │  g) Store results (entries, status codes, timing)         │    │
+│  │  h) Random delay (0.5‑2s) before next test                │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │              PHASE 4: REPORTING                                     │
 │                                                                     │
-│  - Display summary: total tests, successful/failed,                 │
-│    total entries, proxy usage, rate‑limit incidents,                │
-│    status‑code breakdown                                            │
-│  - Show detailed per‑test results (sample entries)                  │
-│  - Save comprehensive `report.txt`                                  │
-│  - Each Gobuster output saved as separate `.txt` file               │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  - Display summary: total tests, successful/failed,         │    │
+│  │    total entries, proxy usage, rate‑limit incidents,        │    │
+│  │    status‑code breakdown                                     │    │
+│  │  - Show detailed per‑test results (sample entries)          │    │
+│  │  - Save comprehensive `report.txt`                          │    │
+│  │  - Each Gobuster output saved as separate `.txt` file      │    │
+│  └─────────────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
@@ -285,6 +323,7 @@ Total Tests: 18
 │                       SCAN COMPLETE                                 │
 │            Results saved in timestamped directory                   │
 └─────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -292,6 +331,7 @@ Total Tests: 18
 
 After a scan, a directory named `gobuster_scan_YYYYMMDD_HHMMSS` is created. Its contents:
 
+```text
 gobuster_scan_20260101_120000/
 ├── report.txt                                    # Full summary report
 ├── fallback_wordlist.txt                         # (if created)
@@ -313,6 +353,7 @@ gobuster_scan_20260101_120000/
 ├── gobuster_http_only200.txt
 ├── gobuster_http_slow.txt
 └── gobuster_http_redirect_verbose.txt
+```
 
 ### Description of Output Files
 
@@ -361,12 +402,12 @@ You can tweak the following inside the script:
 | `gobuster: command not found` | Gobuster not installed. | Install with `sudo apt install gobuster -y`. |
 | `proxychains4: command not found` | Proxychains not installed. | Install with `sudo apt install proxychains4 -y`. |
 | `ModuleNotFoundError: No module named 'requests'` | Python requests missing. | Install with `pip3 install requests`. |
-| `Direct connection fails but proxies exist` | Target may block direct IPs or is behind a CDN. | The tool will automatically switch to proxy mode. |
-| `No working proxies found` | All proxies are dead or blocked. | Supply your own fresh proxies using a custom file. Free proxies often expire quickly. |
-| `Scan stuck on a test` | Gobuster may hang due to network issues. | Kill the script (`Ctrl+C`) and restart. The script handles timeouts (120s per test). |
-| `Rate‑limited (429) persists` | All proxies are being rate‑limited. | Increase the delay between tests, use premium proxies, or reduce thread count. |
-| `No results found` | Wordlist may be too small or target has no exposed directories. | Use a larger wordlist (e.g., `directory-list-2.3-medium.txt`). Consider manual testing. |
-| `Permission denied when cloning SecLists` | Insufficient permissions. | Run with `sudo` or clone to a user‑writable location and modify the `seclist_paths` list. |
+| Direct connection fails but proxies exist | Target may block direct IPs or is behind a CDN. | The tool will automatically switch to proxy mode. |
+| No working proxies found | All proxies are dead or blocked. | Supply your own fresh proxies using a custom file. Free proxies often expire quickly. |
+| Scan stuck on a test | Gobuster may hang due to network issues. | Kill the script (Ctrl+C) and restart. The script handles timeouts (120s per test). |
+| Rate‑limited (429) persists | All proxies are being rate‑limited. | Increase the delay between tests, use premium proxies, or reduce thread count. |
+| No results found | Wordlist may be too small or target has no exposed directories. | Use a larger wordlist (e.g., `directory-list-2.3-medium.txt`). Consider manual testing. |
+| Permission denied when cloning SecLists | Insufficient permissions. | Run with `sudo` or clone to a user‑writable location and modify the `seclist_paths` list. |
 
 ### Debugging Tips
 - **Check `report.txt`** – contains detailed per‑test information.
@@ -383,7 +424,8 @@ You can tweak the following inside the script:
 - `proxychains4`
 - `curl`
 - `git`
-- `Python 3.6+`
+- `python3`
+- `python3-pip`
 
 ### Python Modules
 - `requests` (for proxy testing)
@@ -391,10 +433,10 @@ You can tweak the following inside the script:
 
 ### Installation Commands (Summary)
 
-sudo apt update
-sudo apt install -y gobuster proxychains4 \
-  curl git python3 python3-pip
+```bash
+sudo apt update && sudo apt install -y gobuster proxychains4 curl git python3 python3-pip
 pip3 install requests --break-system-packages
+```
 
 ---
 
@@ -414,7 +456,6 @@ Use it only on systems you own or have explicit written permission to test. Unau
 ## 🤝 Contributing
 
 Contributions are welcome! Here's how you can help:
-
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature`).
 3. Make your changes and commit them (`git commit -m 'Add some feature'`).
@@ -435,7 +476,7 @@ Please ensure your code follows the existing style and includes appropriate comm
 ## 📚 Resources
 
 ### Gobuster Documentation
-- Official Gobuster GitHub
+- [Official Gobuster GitHub](https://github.com/OJ/gobuster)
 - Gobuster Usage Examples
 
 ### Proxy Sources
@@ -450,22 +491,11 @@ Please ensure your code follows the existing style and includes appropriate comm
 
 ---
 
-## 📊 Badges
-
-https://img.shields.io/badge/python-3.6+-blue.svg
-https://img.shields.io/badge/License-MIT-yellow.svg
-https://img.shields.io/badge/Gobuster-3.x-green
-https://img.shields.io/badge/platform-Kali%2520Linux%2520%257C%2520Parrot%2520%257C%2520Ubuntu-lightgrey
-https://img.shields.io/badge/PRs-welcome-brightgreen
-https://img.shields.io/badge/proxy-support-brightgreen
-
----
-
 ## 👨‍💻 Author
 
-Your Name
-- GitHub: `@yourusername`
-- Twitter: `@yourtwitter`
+Your Name  
+GitHub: [@yourusername](https://github.com/)  
+Twitter: [@yourtwitter](https://twitter.com/)  
 
 ---
 
@@ -481,9 +511,9 @@ Your Name
 
 ### Quick Start Summary
 
+```bash
 # 1. Install dependencies
-sudo apt update && sudo apt install -y \
-  gobuster proxychains4 curl git python3 python3-pip
+sudo apt update && sudo apt install -y gobuster proxychains4 curl git python3 python3-pip
 pip3 install requests
 
 # 2. Clone repo
@@ -498,17 +528,13 @@ python3 gobuster_smart_scanner.py example.com my_proxies.txt
 
 # 5. Check results
 cat gobuster_scan_*/report.txt
+```
 
 ### Pro Tips
 - **Use reliable proxies** – free proxies are often slow and get blocked quickly; consider using premium services.
 - **Adjust delays** – if you keep hitting rate limits, increase the delay between tests (edit `random.uniform(0.5, 2)`).
 - **Monitor progress** – watch the coloured output for early signs of blocking.
-- **Combine with other tools** – use the discovered directories as input for further testing (e.g., with `ffuf`, `nikto`, or manual inspection).
+- **Combine with other tools** – use the discovered directories as input for further testing (e.g., with ffuf, nikto, or manual inspection).
 - **Keep wordlists updated** – regularly update SecLists for the latest common paths.
 
----
-
 Made with ❤️ for the Security Community
-
-https://img.shields.io/badge/security-community-blue
-https://img.shields.io/badge/PRs-welcome-brightgreen
