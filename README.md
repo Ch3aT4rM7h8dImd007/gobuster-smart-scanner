@@ -86,7 +86,7 @@ pip3 install requests --break-system-packages   # or just pip3 install requests
 ### Step 3: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/gobuster-smart-scanner.git
+git clone https://github.com/Ch3aT4rM7h8dImd007/gobuster-smart-scanner.git
 cd gobuster-smart-scanner
 ```
 
@@ -517,7 +517,7 @@ sudo apt update && sudo apt install -y gobuster proxychains4 curl git python3 py
 pip3 install requests
 
 # 2. Clone repo
-git clone https://github.com/your-username/gobuster-smart-scanner.git
+git clone https://github.com/Ch3aT4rM7h8dImd007/gobuster-smart-scanner.git
 cd gobuster-smart-scanner
 
 # 3. Run (auto proxies)
